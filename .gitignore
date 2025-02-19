@@ -16,10 +16,4 @@ temp.errors
 *.ini
 .d/
 
-/include
-/firmware
 EZ-Template@3.2.2.zip
-Makefile
-project.PROS
-common.mk
-.clang-format

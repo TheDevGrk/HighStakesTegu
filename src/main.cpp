@@ -3,8 +3,8 @@
 // Chassis constructor
 ez::Drive chassis(
     // These are your drive motors, the first motor is used for sensing!
-    {6, 10},     // Left Chassis Ports (negative port will reverse it!)
-    {1, 7},  // Right Chassis Ports (negative port will reverse it!)
+    {10, 6},     // Left Chassis Ports (negative port will reverse it!)
+    {7, 1},  // Right Chassis Ports (negative port will reverse it!)
 
     11,      // IMU Port
     2.75,  // Wheel Diameter
@@ -80,11 +80,11 @@ void initialize() {
   });
 
   // Initialize chassis and auton selector
-  // chassis.initialize();
-  // ez::as::initialize();
+  chassis.initialize();
+  ez::as::initialize();
   master.rumble(chassis.drive_imu_calibrated() ? "." : "---");
-  pros::Task SortingTask(colorSortTask);
-  screen_print("test3");
+  // pros::Task SortingTask(colorSortTask);
+  // screen_print("test3");
 
 }
 
@@ -242,7 +242,7 @@ void opcontrol() {
   // This is preference to what you like to drive on
   chassis.drive_brake_set(MOTOR_BRAKE_COAST);
 
-  ColorSensor.set_led_pwm(100);
+  // ColorSensor.set_led_pwm(100);
   while (true) {
     // Gives you some extras to make EZ-Template ezier
     ez_template_extras();
