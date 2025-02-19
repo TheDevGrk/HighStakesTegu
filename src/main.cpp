@@ -3,12 +3,12 @@
 // Chassis constructor
 ez::Drive chassis(
     // These are your drive motors, the first motor is used for sensing!
-    {10, 6},     // Left Chassis Ports (negative port will reverse it!)
-    {7, 1},  // Right Chassis Ports (negative port will reverse it!)
+    {-6, -10},     // Left Chassis Ports (negative port will reverse it!)
+    {1, 7},  // Right Chassis Ports (negative port will reverse it!)
 
     11,      // IMU Port
     2.75,  // Wheel Diameter
-    343);   // Wheel RPM = cartridge * (motor gear / wheel gear)
+    703);   // Wheel RPM = cartridge * (motor gear / wheel gear)
 
 
 bool isRedTeam;
@@ -23,7 +23,7 @@ bool colorSortEnabled;
  void colorSortTask(){
   while (true){
     int hue = ColorSensor.get_hue();
-    screen_print(std::to_string(hue), 1);
+    screen_print(std::to_string(hue));
 
     if (colorSortEnabled){
       ColorSensor.set_led_pwm(100);
@@ -31,12 +31,16 @@ bool colorSortEnabled;
     else{
       ColorSensor.set_led_pwm(0);
     }
-    if (((0 < hue < 80 && !isRedTeam) || (hue > 80 && isRedTeam)) && colorSortEnabled){
-      conveyorSpeed = 50;
-      pros::delay(1000);
-      conveyorSpeed = -127;
+    if (((hue < 20 && !isRedTeam) || (hue > 200 && isRedTeam)) && colorSortEnabled){
+      Conveyor.brake();
+      Conveyor.move(127);
+      pros::delay(390);
+      Conveyor.brake();
+      Conveyor.move(-127);
+      pros::delay(50);
+      Conveyor.brake();
+      Conveyor.move(-127);
       pros::delay(200);
-      conveyorSpeed = 127;
     }
     Conveyor.move(conveyorSpeed);
     pros::delay(ez::util::DELAY_TIME);
@@ -83,7 +87,7 @@ void initialize() {
   chassis.initialize();
   ez::as::initialize();
   master.rumble(chassis.drive_imu_calibrated() ? "." : "---");
-  // pros::Task SortingTask(colorSortTask);
+  pros::Task SortingTask(colorSortTask);
   // screen_print("test3");
 
 }
@@ -257,12 +261,12 @@ void opcontrol() {
     
     // Intake / Outtake Controls
     if (master.get_digital(DIGITAL_L2)){
-      Intake.move(127);
-      conveyorSpeed = 127;
+      Intake.move(-127);
+      conveyorSpeed = 110;
     }
     else if(master.get_digital(DIGITAL_L1)){
-      Intake.move(-127);
-      conveyorSpeed = -127;
+      Intake.move(127);
+      conveyorSpeed = -110;
     }
     else{
       Intake.move(0);
