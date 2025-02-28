@@ -425,7 +425,7 @@
     },
     "upload_options": {
       "description": "This is the main competition program using C++, PROS, and EZ t",
-      "slot": 4
+      "slot": 1
     },
     "use_early_access": false
   }

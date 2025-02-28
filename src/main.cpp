@@ -4,15 +4,14 @@
 ez::Drive chassis(
     // These are your drive motors, the first motor is used for sensing!
     {-6, -10},     // Left Chassis Ports (negative port will reverse it!)
-    {1, 7},  // Right Chassis Ports (negative port will reverse it!)
+    {5, 12},  // Right Chassis Ports (negative port will reverse it!)
 
     11,      // IMU Port
     2.75,  // Wheel Diameter
     703);   // Wheel RPM = cartridge * (motor gear / wheel gear)
 
 
-bool isRedTeam;
-bool colorSortEnabled;
+
 /**
  * Runs initialization code. This occurs as soon as the program is started.
  *
@@ -67,6 +66,7 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
+      {"Match Auton (In testing)", matchAuton},
       {"Drive\n\nDrive forward and come back", drive_example},
       {"Turn\n\nTurn 3 times.", turn_example},
       {"Drive and Turn\n\nDrive forward, turn, come back", drive_and_turn},
@@ -261,12 +261,12 @@ void opcontrol() {
     
     // Intake / Outtake Controls
     if (master.get_digital(DIGITAL_L2)){
-      Intake.move(-127);
-      conveyorSpeed = 110;
+      Intake.move(127);
+      conveyorSpeed = 120;
     }
     else if(master.get_digital(DIGITAL_L1)){
-      Intake.move(127);
-      conveyorSpeed = -110;
+      Intake.move(-127);
+      conveyorSpeed = -120;
     }
     else{
       Intake.move(0);
@@ -287,8 +287,8 @@ void opcontrol() {
     }
 
     
-
-    chassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
+    chassis.opcontrol_speed_max_set(127);
+    chassis.opcontrol_arcade_standard(ez::SPLIT); 
 
     // . . .
     // Put more user control code here!

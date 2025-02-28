@@ -1,9 +1,9 @@
 #include "main.h"
 
 // These are out of 127
-const int DRIVE_SPEED = 110;
-const int TURN_SPEED = 90;
-const int SWING_SPEED = 110;
+const int DRIVE_SPEED = 127;
+const int TURN_SPEED = 127;
+const int SWING_SPEED = 127;
 
 ///
 // Constants
@@ -36,7 +36,7 @@ void default_constants() {
   // - if you have tracking wheels, you can run this higher.  1.0 is the max
   chassis.odom_turn_bias_set(0.9);
 
-  chassis.odom_look_ahead_set(7_in);           // This is how far ahead in the path the robot looks at
+  chassis.odom_look_ahead_set(12_in);           // This is how far ahead in the path the robot looks at
   chassis.odom_boomerang_distance_set(16_in);  // This sets the maximum distance away from target that the carrot point can be
   chassis.odom_boomerang_dlead_set(0.625);     // This handles how aggressive the end of boomerang motions are
 
@@ -46,6 +46,50 @@ void default_constants() {
 ///
 // Drive Example
 ///
+void matchAuton(){
+  // isRedTeam = false;
+  // colorSortEnabled = true;
+
+  Grabber.set(false);
+
+  chassis.pid_drive_set(-30_in, DRIVE_SPEED, false, false);
+  chassis.pid_wait();
+
+  chassis.pid_turn_set(45_deg, TURN_SPEED, false);
+  chassis.pid_wait();
+
+  chassis.pid_drive_set(-24_in, DRIVE_SPEED, false, false);
+  chassis.pid_wait();
+
+  Grabber.set(true);
+  conveyorSpeed = 127;
+  Intake.move(127);
+
+  chassis.pid_turn_set(-65_deg, TURN_SPEED, false);
+  chassis.pid_wait();
+
+  chassis.pid_drive_set(24_in, DRIVE_SPEED, false, false);
+  chassis.pid_wait();
+
+  chassis.pid_turn_set(180_deg, TURN_SPEED, false);
+  chassis.pid_wait();
+
+  chassis.pid_drive_set(48_in, DRIVE_SPEED, false, false);
+  chassis.pid_wait();
+
+  chassis.pid_turn_set(-45_deg, TURN_SPEED, false);
+  chassis.pid_wait();
+
+  chassis.pid_drive_set(18_in, DRIVE_SPEED, false, false);
+  chassis.pid_wait();
+
+  chassis.pid_turn_set(-55_deg, TURN_SPEED, false);
+  chassis.pid_wait();
+
+  chassis.pid_drive_set(30_in, DRIVE_SPEED, false, false);
+  chassis.pid_wait();
+}
+
 void drive_example() {
   // The first parameter is target inches
   // The second parameter is max speed the robot will drive at
